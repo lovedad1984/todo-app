@@ -5,14 +5,27 @@
             <i class="fas fa-plus addBtn"></i>
             <!-- <font-awesome-icon :icon="plus"/> -->
         </span>
+        <!-- use the modal component, pass in the prop -->
+        <Modal v-if="showModal" @close="showModal = false" v-on:keyup.esc="showModal=false" >
+            <h3 slot="header">
+                경고!
+                <i class="fas fa-times closeModalBtn" @click="showModal=false"></i>
+            </h3>
+            <div slot="body">
+                아무것도 입력하지 않으셨습니다.
+            </div>
+        </Modal>
     </div>
 </template>
 
 <script>
+import Modal from './common/Modal';
+
 export default {
     data: function() {
         return {
-            newTodoItem: ''
+            newTodoItem: '',
+            showModal: false
         }
     },
     methods: {
@@ -20,11 +33,16 @@ export default {
             if (this.newTodoItem !== '') {
                 this.$emit('addTodoItem', this.newTodoItem);
                 this.clearInput();
+            } else {
+                this.showModal = !this.showModal;
             }
         },
         clearInput: function() {
             this.newTodoItem = '';
         }
+    },
+    components: {
+        Modal: Modal
     }
 }
 </script>
@@ -54,5 +72,8 @@ export default {
         color: white;
         vertical-align: middle;
         cursor: pointer;
+    }
+    .closeModalBtn {
+        color: #42b983;
     }
 </style>
